@@ -9,15 +9,15 @@ Effortless Kubernetes: One Repo, All Essential Manifests!
 
 ### 3. Kubeadm 
 
-#### Control Plane Initialization
+#### First Control Plane Initialization
 
 ```bash
 curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/K8s-Control-Plane-Init.sh | bash
 ```
-#### Worker Node Initialization
+#### Node Initialization
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/K8s-Worker-Node-Init.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/K8s-Node-Init.sh | bash
 ```
 ### 4. Managed Clusters
 
