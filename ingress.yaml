@@ -1,0 +1,46 @@
+# -------------------------------
+# Ingress Resource
+# -------------------------------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bankapp-ingress
+  namespace: default  # Change if your app runs in another namespace.
+  annotations:
+    # Let cert-manager know which ClusterIssuer to use for the TLS certificate.
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+
+    # Force all HTTP traffic to redirect to HTTPS.
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+    # Rewrite URL path before passing to backend (optional).
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+    # Define backend service protocol.
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+
+    # Optional security settings for NGINX
+    nginx.ingress.kubernetes.io/proxy-body-size: "20m"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Frame-Options: DENY";
+
+spec:
+  ingressClassName: nginx  # Matches the IngressClass defined above.
+
+  rules:
+    - host: www.ibtisam-iq.com  # The domain name this ingress will respond to.
+      http:
+        paths:
+          - path: /  # URL prefix to match.
+            pathType: Prefix  # Matches all paths beginning with `/`.
+            backend:
+              service:
+                name: bankapp-service  # Kubernetes service name that receives traffic.
+                port:
+                  number: 80  # Port exposed by the service.
+
+  tls:
+    - hosts:
+        - www.ibtisam-iq.com  # The host for which the TLS cert is requested.
+      secretName: ibtisamx-tls  # Cert-manager will store the TLS cert here.
