@@ -80,20 +80,8 @@ networking:                           # Configures the cluster's networking sett
   apiServerPort: 6443                 # Specifies the API server port (default is 6443 for Kubernetes).
                                       # This port is crucial for managing the cluster externally using `kubectl` or other tools.
 
-kubeadmConfigPatches:                 # Global configuration patches applied to all nodes.
-  - |
-    kind: ClusterConfiguration
-    apiServer:
-      extraArgs:
-        authorization-mode: Node,RBAC # Enables both Node and Role-Based Access Control (RBAC) for secure access management.
-                                      # RBAC enforces role-based permissions, ensuring that only authorized entities can perform actions in the cluster.
 
 featureGates:                         # Optional: Enables or disables experimental Kubernetes features.
   IPv6DualStack: true                 # Enables IPv6 support alongside IPv4, allowing dual-stack networking.
                                       # This is useful for environments transitioning to IPv6 while maintaining IPv4 support.
 
-containerdConfigPatches:              # Optional: Custom configuration for containerd, the container runtime.
-  - |
-    [plugins."io.containerd.grpc.v1.cri".containerd]
-      snapshotter = "overlayfs"       # Configures containerd to use the "overlayfs" snapshotter, improving performance.
-                                      # The snapshotter manages container file system layers efficiently, enhancing speed and storage efficiency.
