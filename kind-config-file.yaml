@@ -82,6 +82,6 @@ networking:                           # Configures the cluster's networking sett
 
 
 featureGates:                         # Optional: Enables or disables experimental Kubernetes features.
-  IPv6DualStack: true                 # Enables IPv6 support alongside IPv4, allowing dual-stack networking.
+  IPv6DualStack: false                 # Enables IPv6 support alongside IPv4, allowing dual-stack networking.
                                       # This is useful for environments transitioning to IPv6 while maintaining IPv4 support.
 
