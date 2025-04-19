@@ -42,6 +42,9 @@ nodes:                                # Defines the cluster nodes, specifying th
         kind: InitConfiguration
         nodeRegistration:
           name: control-plane-1       # Sets a custom name for the control-plane node (useful for multi-node clusters).
+          kubeletExtraArgs:
+            cgroup-driver: "systemd"  # Match with EC2 Docker cgroup driver
+                                      # Ensures that the kubelet uses the same cgroup driver as Docker, preventing potential issues with resource management.
 
 # - role: control-plane               # Defines a second control-plane node for high availability.
                                       # Having multiple control-plane nodes ensures redundancy and avoids a single point of failure.
@@ -60,6 +63,13 @@ nodes:                                # Defines the cluster nodes, specifying th
         kind: JoinConfiguration
         nodeRegistration:
           name: worker-1              # Names the first worker node.
+          kubeletExtraArgs:
+            cgroup-driver: "systemd"  # Match with EC2 Docker cgroup driver
+                                      # Ensures that the kubelet uses the same cgroup driver as Docker, preventing potential issues with resource management.
+#   # Uncomment the following block to add a second worker node.
+#   # This is useful for testing applications that require multiple nodes or for simulating a more complex cluster environment.
+#   # Adding more worker nodes can help in load balancing and resource allocation.
+#   # Note: Ensure that the cluster has enough resources (CPU, memory) to support additional nodes.
 
 # - role: worker                      # Defines another worker node for increased application capacity.
                                       # Adding more worker nodes increases the cluster’s ability to handle workloads.
