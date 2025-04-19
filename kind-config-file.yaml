@@ -12,7 +12,9 @@ name: ibtisam                         # Name of the Kind cluster. This is an ide
 nodes:                                # Defines the cluster nodes, specifying their roles and configurations.
   - role: control-plane               # Defines a node as a control-plane (master) node, responsible for managing the cluster.
     image: kindest/node:v1.32.2       # Specifies the container image for the control-plane node. Ensures all nodes run the same Kubernetes version.
-    extraPortMappings:                # Optional: Maps additional ports from the host machine to the node for external access.               
+    extraPortMappings:                # Optional: Maps additional ports from the host machine to the node for external access.
+      - containerPort: 30000
+        hostPort: 3000                # Maps this service port to port 3000 on the host, making it accessible externally.               
         protocol: TCP                 # Communication protocol used (TCP for most services).
   - role: worker                      # Defines a worker node, which runs application workloads but does not manage the cluster.
     image: kindest/node:v1.32.2       # Uses the same Kubernetes version as the control-plane nodes.
