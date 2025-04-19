@@ -1,21 +1,10 @@
 # kind-calico-cluster-config.yaml
 
 # Description:
-# This is the official Kind cluster configuration file for the "ibtisam" cluster using Calico as the Container Network Interface (CNI). 
+# This is the official Kind cluster manifest using Calico as the Container Network Interface (CNI). 
 # It defines a Kubernetes cluster with one control-plane (master) node and one worker node. 
 # This minimal setup is designed for local development and testing purposes, ensuring simplicity and resource efficiency.
-#
-# Key Features:
-# - **One Master and One Worker Node**: This setup is lightweight and sufficient for testing workloads and cluster configurations locally.
-#   It avoids unnecessary resource usage while still providing a functional Kubernetes environment.
-# - **Calico as CNI**: Enable custom CNI, allowing for custom networking configurations.
-#   Calico is a popular choice for networking in Kubernetes, providing advanced features like network policy enforcement and IP address management.
-# - **Extra Port Mappings**: Ports are mapped from the host to the control-plane node:
-#   - Port 6443: Exposes the Kubernetes API server, allowing external tools like `kubectl` to interact with the cluster.
-#   - Port 3000: Maps to a service port inside the cluster, enabling external access to applications running in the cluster.
-# - **Custom Configurations**: Includes kubeadm and containerd patches for enhanced control over the cluster setup.
-# - **Networking**: Configures pod and service subnets for internal communication and ensures the API server is bound to localhost for security.
-# - **RBAC and Authorization**: Enables RBAC for secure access management, ensuring that only authorized entities can perform actions in the cluster.
+
 
 apiVersion: kind.x-k8s.io/v1alpha4    # Specifies the Kind API version to use. Kind is a tool for running Kubernetes clusters locally using Docker containers.
                                       # This API version ensures compatibility with the current Kind features and configurations.
@@ -32,17 +21,17 @@ nodes:                                # Defines the cluster nodes, specifying th
     image: kindest/node:v1.32.3       # Specifies the container image for the control-plane node. Ensures all nodes run the same Kubernetes version.
                                       # Using a specific version ensures consistency and prevents compatibility issues within the cluster.
     extraPortMappings:                # Optional: Maps additional ports from the host machine to the node for external access.
-      - containerPort: 6443           # Internal Kubernetes API server port inside the container.
-        hostPort: 6443                # Maps this API port to the host, allowing external tools to communicate with the cluster API.
+      - containerPort: 6443           # Internal Kubernetes API server port inside the container, should match the `apiServerPort` in the networking section.
+        hostPort: 6445                # Maps this port to the host, allowing external tools to communicate with the cluster API.
         protocol: TCP                 # Communication protocol used for API interactions (TCP is standard for Kubernetes API).
-      - containerPort: 30000          # Example port for a service running inside the cluster.
+      - containerPort: 30000          # Example port for a service running inside the cluster, should match NodePort in service definitions.
         hostPort: 3000                # Maps the service port to port 3000 on the host, making it accessible externally.
         protocol: TCP                 # Communication protocol used (TCP for most services).
     kubeadmConfigPatches:             # Optional: Custom Kubeadm configurations for bootstrapping the control-plane.
       - |
         kind: InitConfiguration
         nodeRegistration:
-          name: control-plane-1       # Sets a custom name for the control-plane node (useful for multi-node clusters).
+          name: sam-control-plane-1   # Sets a custom name for the control-plane node (useful for multi-node clusters).
 
 # - role: control-plane               # Defines a second control-plane node for high availability.
                                       # Having multiple control-plane nodes ensures redundancy and avoids a single point of failure.
@@ -51,7 +40,7 @@ nodes:                                # Defines the cluster nodes, specifying th
 #     - |
 #       kind: JoinConfiguration
 #       nodeRegistration:
-#         name: control-plane-2       # Names this node as the second control-plane instance.
+#         name: sam-control-plane-2   # Names this node as the second control-plane instance.
 
   - role: worker                      # Defines a worker node, which runs application workloads but does not manage the cluster.
                                       # Worker nodes host application pods and are managed by the control-plane nodes.
@@ -60,7 +49,7 @@ nodes:                                # Defines the cluster nodes, specifying th
       - |
         kind: JoinConfiguration
         nodeRegistration:
-          name: worker-1              # Names the first worker node.
+          name: sam-worker-1          # Names the first worker node.
 
 # - role: worker                      # Defines another worker node for increased application capacity.
                                       # Adding more worker nodes increases the cluster’s ability to handle workloads.
@@ -69,7 +58,7 @@ nodes:                                # Defines the cluster nodes, specifying th
 #     - |
 #       kind: JoinConfiguration
 #       nodeRegistration:
-#         name: worker-2              # Names the second worker node.
+#         name: sam-worker-2          # Names the second worker node.
 
 networking:                           # Configures the cluster's networking settings.
   disableDefaultCNI: true             # Disables the default Container Network Interface (CNI) plugin (Flannel), allowing for custom networking configurations.
@@ -80,8 +69,7 @@ networking:                           # Configures the cluster's networking sett
                                       # Kubernetes services use this range to provide stable internal networking for applications.
   apiServerAddress: "127.0.0.1"       # Specifies the address the API server binds to. Here, it's bound to localhost.
                                       # This ensures that only the local machine can access the API server, enhancing security.
-  apiServerPort: 6443                 # Specifies the external API server port (default is 6443 for Kubernetes).
-                                      # This port is crucial for managing the cluster externally using `kubectl` or other tools.
+  apiServerPort: 6443                 # Specifies the API server port (default is 6443 for Kubernetes).
 
 kubeadmConfigPatches:                 # Global configuration patches applied to all nodes.
   - |
@@ -91,12 +79,16 @@ kubeadmConfigPatches:                 # Global configuration patches applied to 
         authorization-mode: Node,RBAC # Enables both Node and Role-Based Access Control (RBAC) for secure access management.
                                       # RBAC enforces role-based permissions, ensuring that only authorized entities can perform actions in the cluster.
 
-featureGates:                         # Optional: Enables or disables experimental Kubernetes features.
-  IPv6DualStack: false                # Disables IPv6 dual-stack support. 
-                                      # This feature allows pods to have both IPv4 and IPv6 addresses, but is not needed in this configuration.
-
 containerdConfigPatches:              # Optional: Custom configuration for containerd, the container runtime.
   - |
     [plugins."io.containerd.grpc.v1.cri".containerd]
       snapshotter = "overlayfs"       # Configures containerd to use the "overlayfs" snapshotter, improving performance.
                                       # The snapshotter manages container file system layers efficiently, enhancing speed and storage efficiency.
+
+
+# Once the cluster is created, you can deploy Calico as the CNI plugin using the following command:
+
+# curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml
+# sed -i 's/# - name: CALICO_IPV4POOL_CIDR/- name: CALICO_IPV4POOL_CIDR/' calico.yaml
+# sed -i 's/#   value: "192.168.0.0\/16"/  value: "10.244.0.0\/16"/' calico.yaml
+# kubectl apply -f calico.yaml
