@@ -37,7 +37,7 @@ nodes:                                # Defines the cluster nodes, specifying th
       - containerPort: 30000          # Example port for a service running inside the cluster.
         hostPort: 3000                # Maps the service port to port 3000 on the host, making it accessible externally.
         protocol: TCP                 # Communication protocol used (TCP for most services).
-    name: control-plane-1
+    #name: control-plane-1
     kubeadmConfigPatches:
       - |
         kind: KubeletConfiguration
@@ -58,7 +58,7 @@ nodes:                                # Defines the cluster nodes, specifying th
   - role: worker                      # Defines a worker node, which runs application workloads but does not manage the cluster.
                                       # Worker nodes host application pods and are managed by the control-plane nodes.
     image: kindest/node:v1.32.3       # Uses the same Kubernetes version as the control-plane nodes.
-    name: worker-1
+    #name: worker-1
     kubeadmConfigPatches:
       - |
         kind: KubeletConfiguration
