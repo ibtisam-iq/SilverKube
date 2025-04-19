@@ -30,7 +30,7 @@ nodes:                                # Defines the cluster nodes, specifying th
       - |
         kind: InitConfiguration
         nodeRegistration:
-          name: control-plane-1       # Sets a custom name for the control-plane node (useful for multi-node clusters).
+          name: sam-control-plane-1   # Sets a custom name for the control-plane node (useful for multi-node clusters).
 
 # - role: control-plane               # Defines a second control-plane node for high availability.
                                       # Having multiple control-plane nodes ensures redundancy and avoids a single point of failure.
@@ -39,7 +39,7 @@ nodes:                                # Defines the cluster nodes, specifying th
 #     - |
 #       kind: JoinConfiguration
 #       nodeRegistration:
-#         name: control-plane-2       # Names this node as the second control-plane instance.
+#         name: sam-control-plane-2   # Names this node as the second control-plane instance.
 
   - role: worker                      # Defines a worker node, which runs application workloads but does not manage the cluster.
                                       # Worker nodes host application pods and are managed by the control-plane nodes.
@@ -48,7 +48,7 @@ nodes:                                # Defines the cluster nodes, specifying th
       - |
         kind: JoinConfiguration
         nodeRegistration:
-          name: worker-1              # Names the first worker node.
+          name: sam-worker-1          # Names the first worker node.
 
 # - role: worker                      # Defines another worker node for increased application capacity.
                                       # Adding more worker nodes increases the cluster’s ability to handle workloads.
@@ -57,7 +57,7 @@ nodes:                                # Defines the cluster nodes, specifying th
 #     - |
 #       kind: JoinConfiguration
 #       nodeRegistration:
-#         name: worker-2              # Names the second worker node.
+#         name: sam-worker-2          # Names the second worker node.
 
 networking:                           # Configures the cluster's networking settings.
   disableDefaultCNI: false            # Determines whether to disable the default Container Network Interface (CNI). False means the default CNI (Flannel) is enabled. 
