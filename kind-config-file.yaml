@@ -11,7 +11,6 @@
 # - **Flannel as Default CNI**: The default Container Network Interface (CNI) is enabled (Flannel), ensuring pod networking within the cluster.
 #   Flannel is lightweight and easy to use, making it ideal for local setups.
 # - **Extra Port Mappings**: Ports are mapped from the host to the control-plane node:
-#   - Port 6443: Exposes the Kubernetes API server, allowing external tools like `kubectl` to interact with the cluster.
 #   - Port 3000: Maps to a service port inside the cluster, enabling external access to applications running in the cluster.
 # - **Custom Configurations**: Includes kubeadm and containerd patches for enhanced control over the cluster setup.
 # - **Networking**: Configures pod and service subnets for internal communication and ensures the API server is bound to localhost for security.
@@ -32,9 +31,9 @@ nodes:                                # Defines the cluster nodes, specifying th
     image: kindest/node:v1.32.3       # Specifies the container image for the control-plane node. Ensures all nodes run the same Kubernetes version.
                                       # Using a specific version ensures consistency and prevents compatibility issues within the cluster.
     extraPortMappings:                # Optional: Maps additional ports from the host machine to the node for external access.
-      - containerPort: 6443           # Internal Kubernetes API server port inside the container.
-        hostPort: 6443                # Maps this API port to the host, allowing external tools to communicate with the cluster API.
-        protocol: TCP                 # Communication protocol used for API interactions (TCP is standard for Kubernetes API).
+      #- containerPort: 6443           # Internal Kubernetes API server port inside the container.
+      #  hostPort: 6443                # Maps this API port to the host, allowing external tools to communicate with the cluster API.
+      #  protocol: TCP                 # Communication protocol used for API interactions (TCP is standard for Kubernetes API).
       - containerPort: 30000          # Example port for a service running inside the cluster.
         hostPort: 3000                # Maps the service port to port 3000 on the host, making it accessible externally.
         protocol: TCP                 # Communication protocol used (TCP for most services).
@@ -80,7 +79,7 @@ networking:                           # Configures the cluster's networking sett
                                       # Kubernetes services use this range to provide stable internal networking for applications.
   apiServerAddress: "127.0.0.1"       # Specifies the address the API server binds to. Here, it's bound to localhost.
                                       # This ensures that only the local machine can access the API server, enhancing security.
-  apiServerPort: 6443                 # Specifies the external API server port (default is 6443 for Kubernetes).
+  apiServerPort: 6443                 # Specifies the API server port (default is 6443 for Kubernetes).
                                       # This port is crucial for managing the cluster externally using `kubectl` or other tools.
 
 kubeadmConfigPatches:                 # Global configuration patches applied to all nodes.
