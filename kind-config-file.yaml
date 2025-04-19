@@ -28,7 +28,7 @@ name: ibtisam                         # Name of the Kind cluster. This is an ide
 nodes:                                # Defines the cluster nodes, specifying their roles and configurations.
   - role: control-plane               # Defines a node as a control-plane (master) node, responsible for managing the cluster.
                                       # The control-plane node is the brain of the cluster, handling scheduling, state management, and API requests.
-    image: kindest/node:v1.32.3       # Specifies the container image for the control-plane node. Ensures all nodes run the same Kubernetes version.
+    image: kindest/node:v1.32.2       # Specifies the container image for the control-plane node. Ensures all nodes run the same Kubernetes version.
                                       # Using a specific version ensures consistency and prevents compatibility issues within the cluster.
     extraPortMappings:                # Optional: Maps additional ports from the host machine to the node for external access.
       #- containerPort: 6443           # Internal Kubernetes API server port inside the container.
@@ -48,7 +48,7 @@ nodes:                                # Defines the cluster nodes, specifying th
         containerPath: /sys/fs/cgroup
 # - role: control-plane               # Defines a second control-plane node for high availability.
                                       # Having multiple control-plane nodes ensures redundancy and avoids a single point of failure.
-#   image: kindest/node:v1.32.3       # Uses the same Kubernetes version as other nodes to ensure compatibility.
+#   image: kindest/node:v1.32.2       # Uses the same Kubernetes version as other nodes to ensure compatibility.
 #   kubeadmConfigPatches:             # Optional: Configuration patches for the second control-plane node.
 #     - |
 #       kind: JoinConfiguration
@@ -57,7 +57,7 @@ nodes:                                # Defines the cluster nodes, specifying th
 
   - role: worker                      # Defines a worker node, which runs application workloads but does not manage the cluster.
                                       # Worker nodes host application pods and are managed by the control-plane nodes.
-    image: kindest/node:v1.32.3       # Uses the same Kubernetes version as the control-plane nodes.
+    image: kindest/node:v1.32.2       # Uses the same Kubernetes version as the control-plane nodes.
     #name: worker-1
     kubeadmConfigPatches:
       - |
@@ -77,7 +77,7 @@ nodes:                                # Defines the cluster nodes, specifying th
 
 # - role: worker                      # Defines another worker node for increased application capacity.
                                       # Adding more worker nodes increases the cluster’s ability to handle workloads.
-#   image: kindest/node:v1.32.3       # Uses the same Kubernetes version as the rest of the cluster.
+#   image: kindest/node:v1.32.2       # Uses the same Kubernetes version as the rest of the cluster.
 #   kubeadmConfigPatches:             # Optional: Custom patches for this worker node.
 #     - |
 #       kind: JoinConfiguration
