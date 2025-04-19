@@ -30,9 +30,3 @@ networking:                           # Configures the cluster's networking sett
                                       # This ensures that only the local machine can access the API server, enhancing security.
   apiServerPort: 6443                 # Specifies the API server port (default is 6443 for Kubernetes).
                                       # This port is crucial for managing the cluster externally using `kubectl` or other tools.
-
-
-featureGates:                         # Optional: Enables or disables experimental Kubernetes features.
-  IPv6DualStack: false                 # Enables IPv6 support alongside IPv4, allowing dual-stack networking.
-                                      # This is useful for environments transitioning to IPv6 while maintaining IPv4 support.
-
