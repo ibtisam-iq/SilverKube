@@ -37,15 +37,15 @@ nodes:                                # Defines the cluster nodes, specifying th
       - containerPort: 30000          # Example port for a service running inside the cluster.
         hostPort: 3000                # Maps the service port to port 3000 on the host, making it accessible externally.
         protocol: TCP                 # Communication protocol used (TCP for most services).
-    kubeadmConfigPatches:             # Optional: Custom Kubeadm configurations for bootstrapping the control-plane.
+    name: control-plane-1
+    kubeadmConfigPatches:
       - |
-        kind: InitConfiguration
-        nodeRegistration:
-          name: control-plane-1       # Sets a custom name for the control-plane node (useful for multi-node clusters).
-          kubeletExtraArgs:
-            cgroup-driver: "systemd"  # Match with EC2 Docker cgroup driver
-                                      # Ensures that the kubelet uses the same cgroup driver as Docker, preventing potential issues with resource management.
-
+        kind: KubeletConfiguration
+        apiVersion: kubelet.config.k8s.io/v1beta1
+        cgroupDriver: systemd
+    extraMounts:
+      - hostPath: /sys/fs/cgroup
+        containerPath: /sys/fs/cgroup
 # - role: control-plane               # Defines a second control-plane node for high availability.
                                       # Having multiple control-plane nodes ensures redundancy and avoids a single point of failure.
 #   image: kindest/node:v1.32.3       # Uses the same Kubernetes version as other nodes to ensure compatibility.
@@ -58,14 +58,18 @@ nodes:                                # Defines the cluster nodes, specifying th
   - role: worker                      # Defines a worker node, which runs application workloads but does not manage the cluster.
                                       # Worker nodes host application pods and are managed by the control-plane nodes.
     image: kindest/node:v1.32.3       # Uses the same Kubernetes version as the control-plane nodes.
-    kubeadmConfigPatches:             # Optional: Custom configurations for worker nodes.
+    name: worker-1
+    kubeadmConfigPatches:
       - |
-        kind: JoinConfiguration
-        nodeRegistration:
-          name: worker-1              # Names the first worker node.
-          kubeletExtraArgs:
-            cgroup-driver: "systemd"  # Match with EC2 Docker cgroup driver
-                                      # Ensures that the kubelet uses the same cgroup driver as Docker, preventing potential issues with resource management.
+        kind: KubeletConfiguration
+        apiVersion: kubelet.config.k8s.io/v1beta1
+        cgroupDriver: systemd
+    extraMounts:
+      - hostPath: /sys/fs/cgroup
+        containerPath: /sys/fs/cgroup
+    
+    
+
 #   # Uncomment the following block to add a second worker node.
 #   # This is useful for testing applications that require multiple nodes or for simulating a more complex cluster environment.
 #   # Adding more worker nodes can help in load balancing and resource allocation.
