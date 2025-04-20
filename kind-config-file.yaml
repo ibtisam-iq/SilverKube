@@ -30,7 +30,7 @@ nodes:                                # Defines the cluster nodes, specifying th
       - |
         kind: InitConfiguration
         nodeRegistration:
-          name: sam-control-plane-1   # Sets a custom name for the control-plane node (useful for multi-node clusters).
+          name: ibtisam-iq            # Sets a custom name for the control-plane node (useful for multi-node clusters).
 
 # - role: control-plane               # Defines a second control-plane node for high availability.
                                       # Having multiple control-plane nodes ensures redundancy and avoids a single point of failure.
@@ -48,7 +48,7 @@ nodes:                                # Defines the cluster nodes, specifying th
       - |
         kind: JoinConfiguration
         nodeRegistration:
-          name: sam-worker-1          # Names the first worker node.
+          name: worker                # Names the first worker node.
 
 # - role: worker                      # Defines another worker node for increased application capacity.
                                       # Adding more worker nodes increases the cluster’s ability to handle workloads.
