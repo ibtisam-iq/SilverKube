@@ -27,6 +27,36 @@ nodes:                                # Defines the cluster nodes, specifying th
       - containerPort: 30000          # Example port for a service running inside the cluster, should match NodePort in service definitions.
         hostPort: 3000                # Maps the service port to port 3000 on the host, making it accessible externally.
         protocol: TCP                 # Communication protocol used (TCP for most services).
+      - containerPort: 30001          # Set it as a NodePort for a service running inside the cluster.
+        hostPort: 30001               # curl public_ip:30001 # http://54.87.167.19:30001/
+        protocol: TCP
+      - containerPort: 30002
+        hostPort: 30002
+        protocol: TCP
+      - containerPort: 30003
+        hostPort: 30003
+        protocol: TCP
+      - containerPort: 30004
+        hostPort: 30004
+        protocol: TCP
+      - containerPort: 30005
+        hostPort: 30005
+        protocol: TCP
+      - containerPort: 30006
+        hostPort: 30006
+        protocol: TCP
+      - containerPort: 30007
+        hostPort: 30007
+        protocol: TCP
+      - containerPort: 30008
+        hostPort: 30008
+        protocol: TCP
+      - containerPort: 30009
+        hostPort: 30009
+        protocol: TCP
+      - containerPort: 30010
+        hostPort: 30010
+        protocol: TCP  
     kubeadmConfigPatches:             # Optional: Custom Kubeadm configurations for bootstrapping the control-plane.
       - |
         kind: InitConfiguration
