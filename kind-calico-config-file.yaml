@@ -2,7 +2,7 @@
 
 # Description:
 # This is the official Kind cluster manifest using Calico as the Container Network Interface (CNI). 
-# It defines a Kubernetes cluster with one control-plane (master) node and one worker node. 
+# It defines a Kubernetes cluster with two control-planes (master) node and two worker nodes. 
 # This minimal setup is designed for local development and testing purposes, ensuring simplicity and resource efficiency.
 
 
@@ -33,14 +33,14 @@ nodes:                                # Defines the cluster nodes, specifying th
         nodeRegistration:
           name: ibtisam-iq            # Sets a custom name for the control-plane node (useful for multi-node clusters).
 
-# - role: control-plane               # Defines a second control-plane node for high availability.
+  - role: control-plane               # Defines a second control-plane node for high availability.
                                       # Having multiple control-plane nodes ensures redundancy and avoids a single point of failure.
-#   image: kindest/node:v1.32.3       # Uses the same Kubernetes version as other nodes to ensure compatibility.
-#   kubeadmConfigPatches:             # Optional: Configuration patches for the second control-plane node.
-#     - |
-#       kind: JoinConfiguration
-#       nodeRegistration:
-#         name: sam-control-plane     # Names this node as the second control-plane instance.
+    image: kindest/node:v1.32.3       # Uses the same Kubernetes version as other nodes to ensure compatibility.
+    kubeadmConfigPatches:             # Optional: Configuration patches for the second control-plane node.
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          name: ibtisam-x             # Names this node as the second control-plane instance.
 
   - role: worker                      # Defines a worker node, which runs application workloads but does not manage the cluster.
                                       # Worker nodes host application pods and are managed by the control-plane nodes.
@@ -51,14 +51,14 @@ nodes:                                # Defines the cluster nodes, specifying th
         nodeRegistration:
           name: worker-a              # Names the first worker node.
 
-# - role: worker                      # Defines another worker node for increased application capacity.
+  - role: worker                      # Defines another worker node for increased application capacity.
                                       # Adding more worker nodes increases the cluster’s ability to handle workloads.
-#   image: kindest/node:v1.32.3       # Uses the same Kubernetes version as the rest of the cluster.
-#   kubeadmConfigPatches:             # Optional: Custom patches for this worker node.
-#     - |
-#       kind: JoinConfiguration
-#       nodeRegistration:
-#         name: worker-b              # Names the second worker node.
+    image: kindest/node:v1.32.3       # Uses the same Kubernetes version as the rest of the cluster.
+    kubeadmConfigPatches:             # Optional: Custom patches for this worker node.
+      - |
+        kind: JoinConfiguration
+        nodeRegistration:
+          name: worker-b              # Names the second worker node.
 
 networking:                           # Configures the cluster's networking settings.
   disableDefaultCNI: true             # Disables the default Container Network Interface (CNI) plugin (Flannel), allowing for custom networking configurations.
