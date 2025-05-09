@@ -25,7 +25,7 @@ nodes:                                # Defines the cluster nodes, specifying th
         hostPort: 6445                # Maps this port to the host, allowing external tools to communicate with the cluster API.
         protocol: TCP                 # Communication protocol used for API interactions (TCP is standard for Kubernetes API).
       - containerPort: 30000          # Example port for a service running inside the cluster, should match NodePort in service definitions.
-        hostPort: 3000                # Maps the service port to port 3000 on the host, making it accessible externally.
+        hostPort: 8081                # Maps the service port to port 3000 on the host, making it accessible externally.
         protocol: TCP                 # Communication protocol used (TCP for most services).
       - containerPort: 30001          # Set it as a NodePort for a service running inside the cluster.
         hostPort: 30001               # curl public_ip:30001 # http://54.87.167.19:30001/
