@@ -73,16 +73,21 @@ kind: Ingress
 metadata:
   name: amor
   namespace: amor
+  annotations:    # Reason to add: backend app is serving content at / only, but you're exposing it under /amor
+    nginx.ingress.kubernetes.io/rewrite-target: / 
 spec:
   ingressClassName: nginx
   rules:
   - host: local.ibtisam-iq.com
     http:
       paths:
-      - path: /
+      - path: /amor
         pathType: Prefix
         backend:
           service:
             name: amor
             port:
               number: 80
+
+# This tells NGINX to strip /amor from the URL before sending the request to your backend — 
+# so a request to /amor becomes / inside the Pod.
