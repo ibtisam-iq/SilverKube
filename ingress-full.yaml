@@ -60,8 +60,9 @@ spec:
 
   tls:
     - hosts:
-        - www.ibtisam-iq.com  # The host for which the TLS cert is requested.
-      secretName: ibtisamx-tls  # Cert-manager will store the TLS cert here.
+        - www.ibtisam-iq.com    # The host for which the TLS cert is requested.
+      secretName: ibtisamx-tls  # Cert-manager will store the TLS cert & private key here, 
+                                # which both are later used by Ingress Controllor for SSL termination.
 
 ---
 
