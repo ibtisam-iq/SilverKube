@@ -1,0 +1,51 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: my-nginx-gateway-class  # Name used in Gateway to refer to this class
+spec:
+  controllerName: k8s.io/nginx-gateway-controller
+  # This value MUST match the controller that's installed in your cluster.
+  # For NGINX Gateway, it's usually "k8s.io/nginx-gateway-controller"
+  # For Istio, it could be "istio.io/gateway-controller"
+
+---
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: my-nginx-gateway
+  namespace: nginx-gateway  # Choose the namespace where the Gateway controller is watching
+spec:
+  gatewayClassName: my-nginx-gateway-class  # Referencing the GatewayClass above
+  listeners:
+  - name: http  # 👈 This is important! Used by HTTPRoute as sectionName
+    protocol: HTTP
+    port: 80
+    hostname: example.com
+    allowedRoutes:
+      namespaces:
+        from: Same
+        # 'Same' = only allow HTTPRoutes from the same namespace as the Gateway
+        # Use 'All' to allow from any namespace
+
+---
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: frontend-route
+  namespace: nginx-gateway  # Must match allowedRoutes in Gateway
+spec:
+  parentRefs:
+  - name: my-nginx-gateway  # 👈 This references the Gateway name
+    namespace: nginx-gateway
+    sectionName: http  # 👈 Matches the listener name in the Gateway
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix  # Match all paths that start with "/"
+        value: /
+    backendRefs:
+    - name: frontend-svc  # Service that receives traffic
+      port: 80
+      weight: 1  # Optional: used for traffic splitting if multiple backends
