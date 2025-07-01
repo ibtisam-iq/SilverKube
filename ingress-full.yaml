@@ -29,7 +29,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 
     # Force all HTTP traffic to redirect to HTTPS.
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true" 
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 
     # Rewrite URL path before passing to backend (optional).
@@ -45,6 +45,12 @@ metadata:
 
 spec:
   ingressClassName: nginx  # Matches the IngressClass defined above.
+  
+  defaultBackend:
+  service:
+    name: default-http-backend # service must exist in the same namespace
+    port:
+      number: 80
 
   rules:
     - host: www.ibtisam-iq.com  # The domain name this ingress will respond to.
