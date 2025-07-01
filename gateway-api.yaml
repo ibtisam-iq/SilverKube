@@ -21,6 +21,11 @@ spec:
   - name: http  # 👈 This is important! Used by HTTPRoute as sectionName
     protocol: HTTP
     port: 80
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: tls-secret
     hostname: example.com
     allowedRoutes:
       namespaces:
