@@ -26,7 +26,7 @@ spec:
       certificateRefs:
       - kind: Secret
         name: tls-secret
-    hostname: example.com
+    hostname: ibtisam-iq.com
     allowedRoutes:
       namespaces:
         from: Same
