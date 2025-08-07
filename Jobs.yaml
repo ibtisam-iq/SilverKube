@@ -457,3 +457,65 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "500m"
+---
+# Indexed Job with Shared PVC
+# Each pod should write Hello from $JOB_COMPLETION_INDEX to /data/output_$INDEX.txt
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: file-writer
+spec:
+  completions: 3
+  parallelism: 3
+  completionMode: Indexed
+  template:
+    metadata:
+      annotations:
+        batch.kubernetes.io/job-completion-index: "true"
+    spec:
+      containers:
+      - name: writer
+        image: busybox
+        command:
+          - /bin/sh
+          - -c
+          - echo "Hello from pod $JOB_COMPLETION_INDEX" > /data/output_$JOB_COMPLETION_INDEX.txt
+        env:
+        - name: JOB_COMPLETION_INDEX
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['batch.kubernetes.io/job-completion-index']
+        volumeMounts:
+        - name: shared-vol
+          mountPath: /data
+      restartPolicy: Never
+      volumes:
+      - name: shared-vol
+        persistentVolumeClaim:
+          claimName: shared-data
