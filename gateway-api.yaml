@@ -39,12 +39,13 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: frontend-route
-  namespace: nginx-gateway  # Must match allowedRoutes in Gateway
+  # An HTTPRoute does not have to be in the same namespace as the Gateway, but it does have to be in the same namespace as the Service it references.
+  namespace: default
 spec:
   parentRefs:
-  - name: my-nginx-gateway  # 👈 This references the Gateway name
-    namespace: nginx-gateway
-    sectionName: http  # 👈 Matches the listener name in the Gateway
+  - name: my-nginx-gateway      # 👈 This references the Gateway name
+    namespace: nginx-gateway    # 👈 Gateway namespace
+    sectionName: http           # 👈 Matches the listener name in the Gateway
   rules:
   - matches:
     - path:
