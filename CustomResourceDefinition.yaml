@@ -136,9 +136,9 @@ spec:
                   minimum: 50
                   maximum: 5000
                   # Validation: must be between $50 and $5000 per night.
-            additionalProperties: false
-            # Disallow extra keys under spec (prune unexpected fields).
-            # Note: additionalProperties=false enforces that only declared fields exist.
+          additionalProperties: false
+          # Disallow extra keys under spec (prune unexpected fields).
+          # Note: additionalProperties=false enforces that only declared fields exist.
             
             status:
             # --------------------------
