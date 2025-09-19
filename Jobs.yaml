@@ -15,6 +15,9 @@ spec:
   ttlSecondsAfterFinished: 100
   # Defines the Pod template for the Job
   template:
+    metadata:
+      # Pod template name
+      name: pi-po             
     spec:
       # Only Never or OnFailure are allowed for Jobs
       restartPolicy: Never
