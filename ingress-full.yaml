@@ -29,7 +29,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 
     # Force all HTTP traffic to redirect to HTTPS.
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true" 
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"        #  "" mandatory
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 
     # Rewrite URL path before passing to backend (optional).
