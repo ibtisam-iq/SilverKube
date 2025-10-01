@@ -11,6 +11,8 @@ metadata:
 spec:
   # Specifies the number of retries for failed Pods
   backoffLimit: 4
+  # Limits the Job duration to 600 seconds (10 minutes)
+  activeDeadlineSeconds: 600
   # Automatically deletes the Job and its Pods 100 seconds after completion
   ttlSecondsAfterFinished: 100
   # Defines the Pod template for the Job
