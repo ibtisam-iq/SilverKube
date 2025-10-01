@@ -221,11 +221,9 @@ spec:
         image: nginx:latest
         ports:
         - containerPort: 80
-```
 
 ### ✅ Step 2 — Expose it with a Service
 
-```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -237,10 +235,8 @@ spec:
   ports:
   - port: 80
     targetPort: 80
-```
 
 ### ✅ Step 3 — Route traffic via the Gateway
-
 
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
