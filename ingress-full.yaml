@@ -47,7 +47,7 @@ metadata:
 spec:
   ingressClassName: nginx  # Matches the IngressClass defined above.
   
-  defaultBackend:
+  defaultBackend:                      # Mandatory, if spec.rules is missing
   service:
     name: default-http-backend # service must exist in the same namespace
     port:
