@@ -29,6 +29,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 
     # Force all HTTP traffic to redirect to HTTPS.
+    # Redirect http://ibtisam-iq.com requests to https://ibtisam-iq.com
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"        #  "" mandatory
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 
