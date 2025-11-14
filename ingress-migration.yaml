@@ -23,6 +23,23 @@ spec:
       - image: nginx
         imagePullPolicy: Always
         name: nginx
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: html
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - echo 'love you my sweetheart, Ibtisam' > /html/index.html
+        image: busybox:1.28
+        imagePullPolicy: IfNotPresent
+        name: init-container
+        volumeMounts:
+        - mountPath: /html
+          name: html
+      volumes:
+      - emptyDir: {}
+        name: html
 
 ---
 
