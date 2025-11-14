@@ -34,7 +34,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 
     # Rewrite URL path before passing to backend (optional).
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /                # mandatory only, if /test is NOT available, so it redirects /test → /
 
     # Define backend service protocol.
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -57,7 +57,7 @@ spec:
     - host: www.ibtisam-iq.com  # The domain name this ingress will respond to.
       http:
         paths:
-          - path: /  # URL prefix to match.
+          - path: /test  # URL prefix to match.
             pathType: Prefix  # Matches all paths beginning with `/`.
             backend:
               service:
