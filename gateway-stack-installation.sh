@@ -37,12 +37,13 @@ helm repo add traefik https://traefik.github.io/charts
 helm repo update
 
 # Install Traefik
-helm install traefik traefik/traefik \
+helm upgrade --install traefik traefik/traefik \
   --namespace traefik \
   --set ports.web.nodePort=32080 \
   --set ports.websecure.nodePort=32443 \
   --set service.type=NodePort \
-  --create-namespace
+  --create-namespace \
+  --skip-crds
 
 echo
 echo "==============================================="
