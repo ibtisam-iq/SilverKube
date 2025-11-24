@@ -12,12 +12,12 @@ Effortless Kubernetes: One Repo, All Essential Manifests!
 #### First Control Plane Initialization
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/infra-bootstrap/main/K8s-Control-Plane-Init.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/K8s-Control-Plane-Init.sh | bash
 ```
 #### Node Initialization
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/infra-bootstrap/main/K8s-Node-Init.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/K8s-Node-Init.sh | bash
 ```
 ### 4. Managed Clusters
 
