@@ -1,39 +1,15 @@
-# SilverKube
-Effortless Kubernetes: One Repo, All Essential Manifests!
+# ⚠️ ARCHIVED REPOSITORY
 
-## Cluster Setup
+This repository has been archived and is now read-only.
 
-### 1. Minikube
+## Migration Notice
 
-### 2. Kind
+All content from this repository has been migrated to:
+**[SilverStack](https://github.com/ibtisam-iq/silver-stack)**
 
-### 3. Kubeadm 
+New location: 
+- SilverKube → `silver-stack/kubernetes/reference/`
 
-#### First Control Plane Initialization
+For the latest updates, please visit [SilverStack](https://github.com/ibtisam-iq/silver-stack).
 
-```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/infra-bootstrap/main/K8s-Control-Plane-Init.sh | bash
-```
-#### Node Initialization
-
-```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/infra-bootstrap/main/K8s-Node-Init.sh | bash
-```
-### 4. Managed Clusters
-
-#### AWS EKS
-#### GKE
-#### AKS
-
-### 5. Terraform
-
-### 6. k3s
-
-### 7. Rancher
-
-### 8. OpenShift
-
-### 9. MicroK8s
-
----
-
+This repository remains available for historical reference.
